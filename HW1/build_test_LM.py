@@ -9,7 +9,7 @@ import os
 import sys
 import getopt
 
-from LanguageModel import LanguageModel
+from LMMatching import LMMatching
 
 
 def build_LM(in_file):
@@ -21,18 +21,16 @@ def build_LM(in_file):
     # This is an empty method
     # Pls implement your code below
 
-    lms = {}
+    lm_matching = LMMatching()
 
     with open(in_file) as f:
         for line in f:
             # exact label and actual content from the input line
             (lang, text) = line.strip("\n").split(" ", 1)
-            if lang not in lms.keys():
-                lms[lang] = LanguageModel(lang)
-            lms[lang].train(text)
+            lm_matching.train(lang, text)
 
     print("langauge model built!")
-    return lms
+    return lm_matching
 
 
 def test_LM(in_file, out_file, LM):
@@ -47,17 +45,14 @@ def test_LM(in_file, out_file, LM):
 
     with open(in_file) as in_f, open(out_file, "w") as out_f:
         for line in in_f:
-            # try each langauge model and find the one with the highest probability
-            probs = {}
-            for lm in LM.values():
-                probs[lm.get_name()] = lm.cal_log_prob(line)
-            max_lm = max(probs, key=probs.get)
+            res = LM.predict(line)
             # write result to the output file
-            out_f.write(max_lm + " " + line)
+            out_f.write(res + " " + line)
 
     print("langauge models test finished!")
     # run evaluation module
     os.system("python3 eval.py input.predict.txt input.correct.txt")
+
 
 def usage():
     print(
