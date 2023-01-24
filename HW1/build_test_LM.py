@@ -51,7 +51,6 @@ def test_LM(in_file, out_file, LM):
             probs = {}
             for lm in LM.values():
                 probs[lm.get_name()] = lm.cal_log_prob(line)
-            print(probs)
             max_lm = max(probs, key=probs.get)
             # write result to the output file
             out_f.write(max_lm + " " + line)
