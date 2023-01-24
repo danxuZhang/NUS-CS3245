@@ -26,7 +26,7 @@ def build_LM(in_file):
     with open(in_file) as f:
         for line in f:
             # exact label and actual content from the input line
-            (lang, text) = line.strip("\r\n").split(" ", 1)
+            (lang, text) = line.strip("\n").split(" ", 1)
             if lang not in lms.keys():
                 lms[lang] = LanguageModel(lang)
             lms[lang].train(text)
@@ -51,6 +51,7 @@ def test_LM(in_file, out_file, LM):
             probs = {}
             for lm in LM.values():
                 probs[lm.get_name()] = lm.cal_log_prob(line)
+            print(probs)
             max_lm = max(probs, key=probs.get)
             # write result to the output file
             out_f.write(max_lm + " " + line)
