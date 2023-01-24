@@ -99,16 +99,3 @@ class LanguageModel:
         return smoothed
 
 
-def test():
-    lm1 = LanguageModel("Test1")
-    lm1.train("Hello world! 123 hello yes Yes yes.")
-    lm2 = LanguageModel("Test2")
-    lm2.train("Bye bye! No no no.")
-    print(lm1._occurs)
-    print(lm1.cal_log_prob("hello world yes yes"))
-    print(lm2.cal_log_prob("hello world yes yes"))
-    print(lm1.cal_log_prob("bye bye world no no no"))
-    print(lm2.cal_log_prob("bye bye world no no no"))
-
-
-test()
