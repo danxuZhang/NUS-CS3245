@@ -1,7 +1,7 @@
 import re
 import math
 import string
-import numpy as np
+import statistics
 from collections import defaultdict
 
 
@@ -116,7 +116,7 @@ class LanguageModel:
 
         # categorize the text to "other" if the std is less than 1
         # print("Standard deviation: {:.4}".format(np.std(list(probs.values()))))
-        if np.std(list(probs.values())) < 1:
+        if statistics.stdev(list(probs.values())) < 1:
             return "other"
 
         # find the language that has the highest probability
