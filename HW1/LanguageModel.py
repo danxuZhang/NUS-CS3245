@@ -6,10 +6,20 @@ from collections import defaultdict
 
 
 class LanguageModel:
+    """A class containing language models for different languages and can be trained to perform language matching.
+
+    Attributes:
+        _vocab: a set containing all tokens appeared in the model.
+        _langs: a dictionary with language label as key and a dictionary storing the frequency of tokens as value.
+        _n: n-gram model used in the language model, by default n = 4.
+    """
     def __init__(self, n: int = 4) -> None:
-        # a set containing all words appeared in the model
+        """Constructor for the Language Model.
+
+        Args:
+            n: n-gram model.
+        """
         self._vocab = set()
-        # a dictionary containing language label as key and a dictionary of tokens as value
         self._langs = {}
         self._n = n
 
@@ -55,17 +65,31 @@ class LanguageModel:
         return self._n
 
     def train(self, label: string, text: string) -> None:
+        """Training the language model from the input text.
+
+        Args:
+            label: the language that the text belong to.
+            text: content of the training data.
+        """
         # if the language is not in the dictionary
         if label not in self._langs.keys():
             self._langs[label] = defaultdict(int)
 
-        # convert text to tokens and add to the corresponding language dictionary
+        # convert text to tokens and add to the corresponding language dictionary,
+        # also add to the vocabulary
         tokens = self._tokenize(text)
         for token in tokens:
             self._vocab.add(token)
             self._langs[label][token] += 1
 
     def predict(self, text: string) -> string:
+        """Predicts the language that a string belong to.
+
+        Args:
+            text: input text to perform language matching.
+
+        Returns: label of the predicted language, or "other" if the input string doesn't belong to any language.
+        """
         # tokenize the input string
         tokens = self._tokenize(text)
 
@@ -91,7 +115,7 @@ class LanguageModel:
             probs[language] = self._cal_log_prob(language, tokens)
 
         # categorize the text to "other" if the std is less than 1
-        # print("Standard deviation: %.2f", np.std(list(probs.values())))
+        # print("Standard deviation: {:.4}".format(np.std(list(probs.values()))))
         if np.std(list(probs.values())) < 1:
             return "other"
 
