@@ -9,7 +9,7 @@ import os
 import sys
 import getopt
 
-from LMMatching import LMMatching
+from LanguageModel import LanguageModel
 
 
 def build_LM(in_file):
@@ -21,16 +21,16 @@ def build_LM(in_file):
     # This is an empty method
     # Pls implement your code below
 
-    lm_matching = LMMatching()
+    lm = LanguageModel()
 
     with open(in_file) as f:
         for line in f:
             # exact label and actual content from the input line
             (lang, text) = line.strip("\n").split(" ", 1)
-            lm_matching.train(lang, text)
+            lm.train(lang, text)
 
     print("langauge model built!")
-    return lm_matching
+    return lm
 
 
 def test_LM(in_file, out_file, LM):
@@ -51,7 +51,7 @@ def test_LM(in_file, out_file, LM):
 
     print("langauge models test finished!")
     # run evaluation module
-    os.system("python3 eval.py input.predict.txt input.correct.txt")
+    # os.system("python3 eval.py input.predict.txt input.correct.txt")
 
 
 def usage():
